@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Appcues Turbolinks Test" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+    <%= stylesheet_link_tag "application", "data-turbolinks-track": "reload" %>
+    <%= javascript_include_tag "application" %>
+
+    <script>
+      document.addEventListener("turbolinks:load", () => {
+        console.log("Turbolinks page loaded")
+
+        window.Appcues.identify("123456789", {testUser: true})
+
+        if (!document.documentElement.hasAttribute("data-turbolinks-preview")) {
+          window.Appcues.page();
+        }
+      })
+    </script>
+
+    <script type="text/javascript">
+      window.AppcuesSettings = {
+        enableURLDetection: true,
+        customContainer: '.appcues-wrapper'
+      };
+    </script>
+    <script src="//fast.appcues.com/<%= Rails.application.credentials.appcues_id %>.js"></script>
+  </head>
+
+  <body>
+    <h1>Appcues standalone turbolinks test</h1>
+
+    <%= link_to "Page one", page_one_path %>
+    <%= link_to "Page two", page_two_path %>
+
+    <%= yield %>
+
+    <div data-turbolinks-permanent>
+      <div class='appcues-wrapper'></div>
+    </div>
+  </body>
+</html>
